@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dougify - Music</title>
+</head>
+<body>
+    <h1>Upload a Song</h1>
+
+    <!-- Upload Form -->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="song" accept=".mp3" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <hr>
+
+    <h2>Available Songs</h2>
+    <ul id="songList"></ul>
+
+    <script>
+        // Load music list
+        fetch("/list-music")
+            .then(res => res.json())
+            .then(files => {
+                const list = document.getElementById("songList");
+                files.forEach(file => {
+                    const li = document.createElement("li");
+
+                    li.innerHTML = `
+                        <a href="/music/${file}" target="_blank">${file}</a>
+                        <audio controls src="/music/${file}"></audio>
+                    `;
+
+                    list.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>
